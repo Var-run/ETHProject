@@ -1,5 +1,5 @@
 # ETH Project
-This repository contains all data files and methods to recreate the building footprint point cloud segmentation using WebODM, QGIS, and CloudCompare. 
+This repository contains all data files and methods to recreate the building footprint point cloud segmentation using WebODM, QGIS, and CloudCompare. All referenced sample data will be found in the repository.
 
 # Introduction
 This project aims to develop a pipeline to convert drone imagery of cityscapes to extract individual point clouds of buildings in the sampled area. For which the primary input is drone images that are captured and geotagged over the area of interest. Following this, photogrammetry software is used to reconstruct the point cloud using the data collected. The reconstructed point cloud is then fed into GIS (QGIS in our case) to correct any Coordinate Reference Systems (CRS) issues (if any) and to process the point cloud further. 
@@ -30,7 +30,7 @@ Create a new Project and import the data. Once the data has been uploaded, you w
 
 ![image](https://github.com/Var-run/ETHProject/assets/99962766/7fcb7eb3-a9a0-4da9-a6e0-dd8e8ce41781)
 
-OpenDrneMap's output can then be downloaded as a zip file to begin further processing. The output contains a lot of files (shown below), but the one we are interested in is the .laz file present in the odm_georeferences folder, as it contains the georeferenced point cloud of the area of interest.
+OpenDroneMap's output can then be downloaded as a zip file to begin further processing. The output contains a lot of files (shown below), but the one we are interested in is the .laz file present in the odm_georeferences folder, as it contains the georeferenced point cloud of the area of interest.
 
 ![image](https://github.com/Var-run/ETHProject/assets/99962766/9fcd2c2b-b3e6-4b0f-bee4-08a52243ea39)
 
@@ -54,8 +54,25 @@ Upon running this query, the plugin imports all building footprints as a vector 
 
 ![image](https://github.com/Var-run/ETHProject/assets/99962766/b23ebd74-cbaf-4c0c-8126-8f9bb815c942)
 
+Building footprints, by definition, are the boundaries of the  provides the outline of a building drawn along the exterior walls. They fail to account for building overhangs and other protrusions, so it is imperative to extend each polygon outwards to create a "buffer" to capture all features of each building completely. This can be achieved by employing the "Buffer" algorithm from the QGIS Toolbox. Once you open the dialog box, you will be greeted by the following window.
 
+![image](https://github.com/Var-run/ETHProject/assets/99962766/94fbefed-ffe9-42ad-a322-d123950bbcb4)
 
+The parameters here are highly suggested as they work very well with the sample data provided. The distance is given in degrees and we select join style as miter to preventing rounding off of edges to ensure that fewer points are needed to computer to represent the polygon thus resulting in fewer total calculations. The final result should look like the image attached below. Here we can see that we have the desired effect of enclosing an area that is slightly larger than the original building footprints to accommodate overhang and protrusions.
+
+![image](https://github.com/Var-run/ETHProject/assets/99962766/2442d825-3728-4f5d-96c3-33e8facf686a)
+
+The next step is to export these files under a specific projection system namely "EPSG:32632 - WGS 84 / UTM zone 32N". We choose because as per our experiments, this projection system works best when we need to further process the shapefile and the point cloud in CloudCompare and result in perfect recreation of geographic overlap between the point cloud and the shapefile.
+
+Export the buffered shapefile as a GeoJson with the settings displayed below, and similarly export it as a shapefile too with the same parameters. (NOTE: Use "Current Layer Extent")
+
+![image](https://github.com/Var-run/ETHProject/assets/99962766/5a6bd4be-3c6d-4ac6-8d96-e855bbb82052)
+
+Now export the point cloud similarly.
+
+![image](https://github.com/Var-run/ETHProject/assets/99962766/a6b72c65-f30f-4bba-86e1-41d60fdec09b)
+
+# Step 4: CloudCompare
 
 
 
