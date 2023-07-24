@@ -74,6 +74,24 @@ Now export the point cloud similarly.
 
 # Step 4: CloudCompare
 
+Before we start to manipulate the point cloud, we should test to see if the export from QGIS is as per our expectations. So open CloudCompare and drag and drop the point cloud. When asked for the global shift, use the "Suggested" option and import the cloud as shown here.
+
+![image](https://github.com/Var-run/ETHProject/assets/99962766/0d198af0-7982-42ae-b9fc-d62eef598674)
+
+Next, when importing the .shp shapefile, do the same and select "Suggested" ONLY. This ensures that both the point cloud and the shapefile are in the same points in space and overlap as we expect it to be.
+
+![image](https://github.com/Var-run/ETHProject/assets/99962766/ba4ae41c-a4eb-4a06-b0b3-d48301d085b3)
+
+To view it without "Perspective" turned on, press F3 on the keyboard or turn it off manually. Once you do so, you should expect to see a display that looks similar to the screenshot shown below. The shapefilea and the pointcloud have aligned as expected. The main reason for importing the shapefile is to take note of the GLOBAL SHIFT values for the point cloud and the shapefile which will be usefull later on.
+
+![image](https://github.com/Var-run/ETHProject/assets/99962766/bf60cbd0-6039-48c8-84d3-ff5611d87748)
+
+Now, go to the properties window for the shapefile and the point cloud individually and take note of the "Global Shift" values. We would need this for our segmentation task thats coming up next.
+
+![image](https://github.com/Var-run/ETHProject/assets/99962766/d7d0986d-cf23-4668-ae0a-23a62a62daae)
+
+# Step 5: Segmentation using CloudCompare's Segmentation Tool via Command Line
+
 
 
 
