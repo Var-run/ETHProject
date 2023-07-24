@@ -22,3 +22,23 @@ The next step is to run the data through photogrammetry software, and we chose t
 
 ![image](https://github.com/Var-run/ETHProject/assets/99962766/b4c6aa1f-8d50-4f7e-931b-c174e6fcdbcb)
 
+Download and install WebODM by following the steps given in their documentation (https://docs.opendronemap.org/installation/). We are ready to process the data once it's up and running using Docker.
+
+![image](https://github.com/Var-run/ETHProject/assets/99962766/0428a6cc-11dd-4c70-b122-4acc01513a0d)
+
+Create a new Project and import the data. Once the data has been uploaded, you will be able to either process the job on your own hardware or take the help of ODMs cloud processing cluster called Lightning Network for larger datasets. There are a number of presets and options to finely define the processing parameters. For the sake of simplicity, we select the preset - Buildings Ultra Quality or 3D Mesh, following which we begin processing.
+
+![image](https://github.com/Var-run/ETHProject/assets/99962766/7fcb7eb3-a9a0-4da9-a6e0-dd8e8ce41781)
+
+OpenDrneMap's output can then be downloaded as a zip file to begin further processing. The output contains a lot of files (shown below), but the one we are interested in is the .laz file present in the odm_georeferences folder, as it contains the georeferenced point cloud of the area of interest.
+
+![image](https://github.com/Var-run/ETHProject/assets/99962766/9fcd2c2b-b3e6-4b0f-bee4-08a52243ea39)
+
+# Step 3: QGIS
+
+
+
+
+
+
+
