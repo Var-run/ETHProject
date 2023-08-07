@@ -2,8 +2,9 @@
 This repository contains all data files and methods to recreate the building footprint point cloud segmentation using WebODM, QGIS, and CloudCompare. All referenced sample data will be found in the repository.
 
 # Resources
-Sample Data - https://drive.google.com/drive/folders/1oHafnQikcp2WWGg_-9QnJHNmybf0KZK9
-Python Script - CloudCompareCrop2DScript.py
+- Sample Data - https://drive.google.com/drive/folders/1oHafnQikcp2WWGg_-9QnJHNmybf0KZK9
+- ODM Output - https://drive.google.com/file/d/1wDCRQjRzcwcxEG1J9Gw5VRFgao6-bn3h/view?usp=sharing
+- Python Script - CloudCompareCrop2DScript.py
 
 # Introduction
 This project aims to develop a pipeline to convert drone imagery of cityscapes to extract individual point clouds of buildings in the sampled area. For which the primary input is drone images that are captured and geotagged over the area of interest. Following this, photogrammetry software is used to reconstruct the point cloud using the data collected. The reconstructed point cloud is then fed into GIS (QGIS in our case) to correct any Coordinate Reference Systems (CRS) issues (if any) and to process the point cloud further. 
