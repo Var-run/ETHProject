@@ -1,4 +1,4 @@
-# ETH Project
+# Roof Material Detection - Zurich
 This repository contains all data files and methods to recreate the building footprint point cloud segmentation using WebODM, QGIS, and CloudCompare. All referenced sample data will be found in the repository.
 
 # Introduction
