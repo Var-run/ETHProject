@@ -1,6 +1,11 @@
 # Roof Material Detection - Zurich
 This repository contains all data files and methods to recreate the building footprint point cloud segmentation using WebODM, QGIS, and CloudCompare. All referenced sample data will be found in the repository.
 
+# Resources
+Sample Data -
+QGIS Project - 
+Python Script - 
+
 # Introduction
 This project aims to develop a pipeline to convert drone imagery of cityscapes to extract individual point clouds of buildings in the sampled area. For which the primary input is drone images that are captured and geotagged over the area of interest. Following this, photogrammetry software is used to reconstruct the point cloud using the data collected. The reconstructed point cloud is then fed into GIS (QGIS in our case) to correct any Coordinate Reference Systems (CRS) issues (if any) and to process the point cloud further. 
 
@@ -22,7 +27,7 @@ The next step is to run the data through photogrammetry software, and we chose t
 
 ![image](https://github.com/Var-run/ETHProject/assets/99962766/b4c6aa1f-8d50-4f7e-931b-c174e6fcdbcb)
 
-Download and install WebODM by following the steps given in their documentation (https://docs.opendronemap.org/installation/). We are ready to process the data once it's up and running.
+Download and install WebODM by following the steps in their documentation (https://docs.opendronemap.org/installation/). We are ready to process the data once it's up and running.
 
 ![image](https://github.com/Var-run/ETHProject/assets/99962766/0428a6cc-11dd-4c70-b122-4acc01513a0d)
 
@@ -30,7 +35,7 @@ Create a new Project and import the data. Once the data has been uploaded, you w
 
 ![image](https://github.com/Var-run/ETHProject/assets/99962766/7fcb7eb3-a9a0-4da9-a6e0-dd8e8ce41781)
 
-OpenDroneMap's output can then be downloaded as a zip file to begin further processing. The output contains a lot of files (shown below), but the one we are interested in is the .laz file present in the odm_georeferences folder, as it contains the georeferenced point cloud of the area of interest.
+OpenDroneMap's output can then be downloaded as a zip file for further processing. The output contains a lot of files (shown below), but the one we are interested in is the .laz file present in the odm_georeferences folder, as it contains the georeferenced point cloud of the area of interest.
 
 ![image](https://github.com/Var-run/ETHProject/assets/99962766/9fcd2c2b-b3e6-4b0f-bee4-08a52243ea39)
 
@@ -58,11 +63,11 @@ Building footprints, by definition, are the boundaries of the  provides the outl
 
 ![image](https://github.com/Var-run/ETHProject/assets/99962766/94fbefed-ffe9-42ad-a322-d123950bbcb4)
 
-The parameters here are highly suggested as they work very well with the sample data provided. The distance is given in degrees and we select join style as miter to preventing rounding off of edges to ensure that fewer points are needed to computer to represent the polygon thus resulting in fewer total calculations. The final result should look like the image attached below. Here we can see that we have the desired effect of enclosing an area that is slightly larger than the original building footprints to accommodate overhang and protrusions.
+The parameters here are highly suggested as they work well with the sample data. The distance is given in degrees and we select join style as miter to prevent rounding off of edges to ensure that fewer points are needed to the computer to represent the polygon thus resulting in fewer total calculations. The final result should look like the image attached below. Here we can see that we have the desired effect of enclosing an area that is slightly larger than the original building footprints to accommodate overhang and protrusions.
 
 ![image](https://github.com/Var-run/ETHProject/assets/99962766/2442d825-3728-4f5d-96c3-33e8facf686a)
 
-The next step is to export these files under a specific projection system namely "EPSG:32632 - WGS 84 / UTM zone 32N". We choose because as per our experiments, this projection system works best when we need to further process the shapefile and the point cloud in CloudCompare and result in perfect recreation of geographic overlap between the point cloud and the shapefile.
+The next step is to export these files under a specific projection system, "EPSG:32632 - WGS 84 / UTM zone 32N". We choose this because, as per our experiments, this projection system works best when we need further to process the shapefile and the point cloud in CloudCompare. This results in a perfect recreation of geographic overlap between the point cloud and the shapefile.
 
 Export the buffered shapefile as a GeoJson with the settings displayed below, and similarly export it as a shapefile too with the same parameters. (NOTE: Use "Current Layer Extent")
 
@@ -78,20 +83,39 @@ Before we start to manipulate the point cloud, we should test to see if the expo
 
 ![image](https://github.com/Var-run/ETHProject/assets/99962766/0d198af0-7982-42ae-b9fc-d62eef598674)
 
-Next, when importing the .shp shapefile, do the same and select "Suggested" ONLY. This ensures that both the point cloud and the shapefile are in the same points in space and overlap as we expect it to be.
+Next, when importing the .shp shapefile, do the same and select "Suggested" ONLY. This ensures that both the point cloud and the shapefile are in the same points in space and overlap as we expect them to be.
 
 ![image](https://github.com/Var-run/ETHProject/assets/99962766/ba4ae41c-a4eb-4a06-b0b3-d48301d085b3)
 
-To view it without "Perspective" turned on, press F3 on the keyboard or turn it off manually. Once you do so, you should expect to see a display that looks similar to the screenshot shown below. The shapefilea and the pointcloud have aligned as expected. The main reason for importing the shapefile is to take note of the GLOBAL SHIFT values for the point cloud and the shapefile which will be usefull later on.
+To view it without "Perspective" turned on, press F3 on the keyboard or turn it off manually. Once you do so, you should expect to see a display similar to the screenshot below. The shapefile and the point cloud have aligned as expected. The main reason for importing the shapefile is to take note of the GLOBAL SHIFT values for the point cloud and the shapefile which will be useful later on.
 
 ![image](https://github.com/Var-run/ETHProject/assets/99962766/bf60cbd0-6039-48c8-84d3-ff5611d87748)
 
-Now, go to the properties window for the shapefile and the point cloud individually and take note of the "Global Shift" values. We would need this for our segmentation task thats coming up next.
+Now, go to the properties window for the shapefile and the point cloud individually and take note of the "Global Shift" values. We would need this for our segmentation task that's coming up next.
 
 ![image](https://github.com/Var-run/ETHProject/assets/99962766/d7d0986d-cf23-4668-ae0a-23a62a62daae)
 
 # Step 5: Segmentation using CloudCompare's Segmentation Tool via Command Line
 
+Since we now have everything we need, we must use the shapefiles to crop out sections from the point cloud. In order to do so, we use CloudCompare's segmentation tool. After selecting the point cloud and using the segmentation tool, we would be greeted by the following window, followed by selecting the "Use existing polyline" option from the dropdown.
 
+![image](https://github.com/Var-run/ETHProject/assets/99962766/926b467a-1263-40bd-85c5-40f2c5fa16b5)
+
+There are two main drawbacks to segmenting the cloud in this way.
+- It does not allow the user to select multiple polylines once to parallelize the operation and thus leads to poor automation capabilities.
+- It also does not allow the user to easily rename the resulting cropped point cloud as per their specification (OSM ID/ EGID)
+
+So in order to fix this, we turn to CloudCompares Command Line Mode to quickly segment a city's point cloud. By doing so, we eliminate both drawbacks by writing a Python script to loop through all polygons and having control over how to name each one according to our preferences. By default, this mode only opens a small console window, applies the requested actions, and eventually saves the result in a file in the same directory(ies) as the input file(s). Commands are applied in the order they are written (like a state machine). https://www.cloudcompare.org/doc/wiki/index.php/Command_line_mode
+
+The segmentation tool is specified as a "CROP 2D" command in the command line mode and has the following specifications. 
+
+![image](https://github.com/Var-run/ETHProject/assets/99962766/c971bd3d-7d69-4cb6-a3a2-2fb9633af00e)
+
+Since the input format is not convenient with the shapefile format of the polygons that we currently have, we must turn to export the shapefile as a GeoJSON for easy manipulation in the Python script that would allow a seamless integration into the command line mode of CloudCompare. As per previous steps, this file should already be present in your machine, and now we can use it to generate a command line script for CloudCompare using Python. (Code can be found in the repository)
+
+The final command that is being passed would look something like this
+```
+CloudCompare -SILENT -AUTO_SAVE OFF -O -GLOBAL_SHIFT -464000 -5247000 0 "C:\Crop2DTest\odm_georeferenced_model.laz" -CROP2D Z 14 233.542228180042 169.37840106990188 240.66421426046873 183.67630102299154 243.42336298833834 187.27241455577314 247.55219471349847 189.56099961232394 252.2847958728089 190.33349316194654 254.36182424088474 190.0786071512848 256.41002038581064 189.33001640439034 260.3230039589689 186.38172638602555 263.0054321034695 181.95552292931825 263.88300173473544 177.3445346672088 263.6980859042378 161.79339593835175 251.46847207017709 162.12427388876677 245.05494656821247 163.74126004986465 233.542228180042 169.37840106990188  -C_EXPORT_FMT LAS -SAVE_CLOUDS FILE C:\Crop2DTest\Output\w39985864.las
+```
 
 
