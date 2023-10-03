@@ -133,3 +133,5 @@ For further clarification, the commented Python script will help clear any doubt
 # Step 6: Instance Segmentation
 
 Now, using the Material Detection in Zurich Jupyter Notebook, we can segment and classify the rooftops once we have a labelled dataset.
+
+https://colab.research.google.com/drive/1YGJ8t5Fm-XQLXLPV0IkyNYfV_pzSIFJu
