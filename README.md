@@ -129,3 +129,7 @@ Here are a few points to take note of:
 There is internal handling of scenarios where a modified command is being run to check whether there are any points inside a given point cloud. This is necessary because if CloudCompare runs into a scenario where Crop2D saves the original complete point cloud as the cropped point cloud (hence creating more duplicates of the original point cloud with incorrect nomenclature) if there are no points inside a specific polygon.
 
 For further clarification, the commented Python script will help clear any doubts. Finally, a sample test run is also uploaded to the repository to show you the expected output behavior when recreating these results with the sample test data.
+
+# Step 6: Instance Segmentation
+
+Now, using the Material Detection in Zurich Jupyter Notebook, we can segment and classify the rooftops once we have a labelled dataset.
